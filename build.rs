@@ -9,6 +9,10 @@ fn main() {
         cc.define("OPJ_HAVE__ALIGNED_MALLOC", Some("1"));
         #[cfg(feature = "threads")]
         cc.define("MUTEX_win32", Some("1"));
+    } else if target == "wasm" {
+        cc.flag("--sysroot=/opt/wasi-sdk/share/wasi-sysroot/");
+        cc.define("_WASI_EMULATED_PROCESS_CLOCKS", Some("1"));
+        cc.define("CFLAGS", Some("-lwasi-emulated-process-clocks"));
     } else {
         cc.define("OPJ_HAVE_POSIX_MEMALIGN", Some("1"));
         #[cfg(feature = "threads")]
